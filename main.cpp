@@ -5,7 +5,7 @@
   TODO: redesign and recode the whole number recognition system, and AFTER that add the operation sequence system.
 */
 
-char numbers[10] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+char numbers[10] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'};
 
 template <typename T>
 bool isFound(T* array, T value, int arraySize) {
@@ -104,6 +104,17 @@ int main() {
   std::cout << "Enter your equation:\n";
 
   std::getline(std::cin, equation);
+
+  for (int i = 0; i < equation.length(); i++) {
+    if (isFound(numbers, equation[i], 11) && !foundNum) {
+      foundNum = true;
+      std::cout << i << '\n';
+    }
+    if (!isFound(numbers, equation[i], 11) && foundNum && equation[i] != ',') {
+      std::cout << isFound(numbers, equation[i], 11) << '\n';
+      foundNum = false;
+    }
+  }
   
   return 0;
 }
