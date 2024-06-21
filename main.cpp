@@ -1,6 +1,24 @@
 #include <cmath>
 #include <iostream>
 
+/*
+  !DANGER-THERE'S A BUG IN THE CODE.
+  TODO FIND THE BEG AND FIX IT
+*/
+
+char numbers[10] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+
+template <typename T>
+bool isFound(T* array, T value, int arraySize) {
+    for (int i = 0; i < arraySize; i++) {
+        if (array[i] == value)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 int checkForDecimalPointIndex(std::string numStr) {
   for (int i = 0; i < numStr.length(); i++) {
     if (numStr[i] == '.') {
@@ -28,9 +46,6 @@ double getNumBeforeDecimalPoint(std::string numStr) {
   }
   return num;
 }
-
-// std::string decimalNumStr = numStr.substr(checkForDecimalPointIndex(numStr) +
-// 1, numStr.length() - 1);
 
 double getNumAfterDecimalPoint(std::string numStr) {
   std::string decimalNumStr;
@@ -83,6 +98,7 @@ double getNum(int startIndex, std::string equation) {
 
 int main() {
   std::string equation;
+  bool foundNum = false;
   double total = 0;
   double currentNumber = 0;
 
@@ -92,9 +108,17 @@ int main() {
   std::getline(std::cin, equation);
 
   for (int i = 0; i < equation.length(); i++) {
-    if (*typeid(equation[i]).name() == 'i' || equation[i] == '.') {
-      std::cout << getNum(i, equation) << '\n';
-      std::cout << i << '\n';
+    if (isFound(numbers, equation[i], 10) && !foundNum || equation[i] == '.' && !foundNum) {
+        foundNum = true;
+        std::cout << getNum(i, equation) << '\n';
+        std::cout << i << "\n\n";
+        while (true) {
+          i++;
+          if (!isFound(numbers, equation[i], 10) || equation[i] == '.') {
+            foundNum = false;
+            break;
+          }
+        }
     }
   }
 
