@@ -5,7 +5,7 @@
   TODO: redesign and recode the whole number recognition system, and AFTER that add the operation sequence system.
 */
 
-char numbers[10] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'};
+char numbers[11] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'};
 
 template <typename T>
 bool isFound(T* array, T value, int arraySize) {
@@ -32,6 +32,9 @@ double getNumBeforeDecimalPoint(std::string numStr) {
   long long int num = 0;
 
   std::string newNumStr = numStr.substr(0, checkForDecimalPointIndex(numStr));
+  if (newNumStr[0] == '.' || newNumStr[0] == '0') {
+    return 0;
+  }
 
   for (int i = 0; i < newNumStr.length(); i++) {
     if (numLength == 1 || i == numLength - 1) {
@@ -79,7 +82,7 @@ double getNum(int startIndex, std::string equation) {
   for (int i = startIndex; i < equation.length(); i++) {
     if (equation[i] != '(' && equation[i] != ')' && equation[i] != '*' &&
         equation[i] != '/' && equation[i] != '+' && equation[i] != '-' &&
-        equation[i] != ' ') {
+        equation[i] != ' ' && equation[i] != '^') {
       numLength++;
     } else {
       break;
@@ -90,7 +93,9 @@ double getNum(int startIndex, std::string equation) {
 
   long double num = 0;
   num += getNumBeforeDecimalPoint(numStr);
-  num += getNumAfterDecimalPoint(numStr);
+  if (getNumAfterDecimalPoint(numStr) != -1) {
+    num += getNumAfterDecimalPoint(numStr);
+  }
 
   return num;
 }
@@ -104,14 +109,13 @@ int main() {
   std::cout << "Enter your equation:\n";
 
   std::getline(std::cin, equation);
-
+  
   for (int i = 0; i < equation.length(); i++) {
     if (isFound(numbers, equation[i], 11) && !foundNum) {
       foundNum = true;
-      std::cout << i << '\n';
+      std::cout << getNum(i, equation) << '\n';
     }
-    if (!isFound(numbers, equation[i], 11) && foundNum && equation[i] != ',') {
-      std::cout << isFound(numbers, equation[i], 11) << '\n';
+    else if (!isFound(numbers, equation[i], 11) && foundNum) {
       foundNum = false;
     }
   }
