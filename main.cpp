@@ -2,7 +2,8 @@
 #include <iostream>
 
 /*
-  TODO: redesign and recode the whole number recognition system, and AFTER that add the operation sequence system.
+  !DANGER-THERE'S A BUG IN THE CODE.
+  TODO FIND THE BEG AND FIX IT
 */
 
 char numbers[10] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
@@ -98,12 +99,28 @@ double getNum(int startIndex, std::string equation) {
 int main() {
   std::string equation;
   bool foundNum = false;
-  long double total = 0;
+  double total = 0;
+  double currentNumber = 0;
 
   std::cout << "CALCULATOR\n";
   std::cout << "Enter your equation:\n";
 
   std::getline(std::cin, equation);
-  
+
+  for (int i = 0; i < equation.length(); i++) {
+    if (isFound(numbers, equation[i], 10) && !foundNum || equation[i] == '.' && !foundNum) {
+        foundNum = true;
+        std::cout << getNum(i, equation) << '\n';
+        std::cout << i << "\n\n";
+        while (true) {
+          i++;
+          if (!isFound(numbers, equation[i], 10) || equation[i] == '.') {
+            foundNum = false;
+            break;
+          }
+        }
+    }
+  }
+
   return 0;
 }
