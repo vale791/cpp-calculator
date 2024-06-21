@@ -6,7 +6,7 @@
   TODO FIND THE BEG AND FIX IT
 */
 
-char numbers[10] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+char numbers[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
 template <typename T>
 bool isFound(T* array, T value, int arraySize) {
@@ -106,21 +106,6 @@ int main() {
   std::cout << "Enter your equation:\n";
 
   std::getline(std::cin, equation);
-
-  for (int i = 0; i < equation.length(); i++) {
-    if (isFound(numbers, equation[i], 10) && !foundNum || equation[i] == '.' && !foundNum) {
-        foundNum = true;
-        std::cout << getNum(i, equation) << '\n';
-        std::cout << i << "\n\n";
-        while (true) {
-          i++;
-          if (!isFound(numbers, equation[i], 10) || equation[i] == '.') {
-            foundNum = false;
-            break;
-          }
-        }
-    }
-  }
 
   return 0;
 }
