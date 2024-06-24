@@ -116,6 +116,9 @@ int main() {
       foundNum = false;
     }
   }
-  // That's it!
+  /*
+    ! there is a goddamn bug
+    todo fix the damn bug
+  */
   return 0;
 }
