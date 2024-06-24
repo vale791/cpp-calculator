@@ -1,11 +1,6 @@
 #include <cmath>
 #include <iostream>
 
-/*
-  !DANGER-THERE'S A BUG IN THE CODE.
-  TODO FIND THE BEG AND FIX IT
-*/
-
 char numbers[11] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'};
 
 template <typename T>
