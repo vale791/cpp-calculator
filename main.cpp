@@ -2,7 +2,8 @@
 #include <iostream>
 
 /*
-  TODO: redesign and recode the whole number recognition system, and AFTER that add the operation sequence system.
+  !DANGER-THERE'S A BUG IN THE CODE.
+  TODO FIND THE BEG AND FIX IT
 */
 
 char numbers[11] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'};
@@ -103,7 +104,8 @@ double getNum(int startIndex, std::string equation) {
 int main() {
   std::string equation;
   bool foundNum = false;
-  long double total = 0;
+  double total = 0;
+  double currentNumber = 0;
 
   std::cout << "CALCULATOR\n";
   std::cout << "Enter your equation:\n";
