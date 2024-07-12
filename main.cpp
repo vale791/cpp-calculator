@@ -85,11 +85,11 @@ double getNum(int startIndex, std::string equation) {
     }
   }
 
-  std::string numStr = equation.substr(startIndex, startIndex + numLength);
+  std::string numStr = equation.substr(startIndex, numLength);
 
   long double num = 0;
   num += getNumBeforeDecimalPoint(numStr);
-  if (getNumAfterDecimalPoint(numStr) != -1) {
+  if (!(getNumAfterDecimalPoint(numStr) == -1)) {
     num += getNumAfterDecimalPoint(numStr);
   }
 
@@ -116,9 +116,5 @@ int main() {
       foundNum = false;
     }
   }
-  /*
-    ! there is a goddamn bug
-    todo fix the damn bug
-  */
   return 0;
 }
