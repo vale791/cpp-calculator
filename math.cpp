@@ -72,7 +72,8 @@ double getNumAfterDecimalPoint(std::string numStr) {
   return decimalNum;
 }
 
-double getNum(int startIndex, std::string equation) {
+std::string getNumStr(int startIndex, std::string equation) {
+
   int numLength = 0;
   for (int i = startIndex; i < equation.length(); i++) {
     if (equation[i] != '(' && equation[i] != ')' && equation[i] != '*' &&
@@ -85,6 +86,12 @@ double getNum(int startIndex, std::string equation) {
   }
 
   std::string numStr = equation.substr(startIndex, numLength);
+
+  return numStr;
+}
+
+long double getNum(int startIndex, std::string equation) {
+  std::string numStr = getNumStr(startIndex, equation);
 
   long double num = 0;
   num += getNumBeforeDecimalPoint(numStr);
@@ -108,19 +115,20 @@ void Solver::setEquation(std::string e) {
 std::string Solver::getEquation() { return equation; }
 
 void Solver::parse() {
+  std::vector<std::string> numStrings;
   bool foundNum;
 
   for (int i = 0; i < equation.length(); i++) {
     if (isFound(numbers, equation[i], 11) && !foundNum) {
       foundNum = true;
-      std::cout << getNum(i, equation) << '\n';
+      numStrings.push_back(getNumStr(i, equation));
     } else if (!isFound(numbers, equation[i], 11) && foundNum) {
       foundNum = false;
     }
   }
 }
 
-// No idea how to do this
+// I got an idea on how to do this
 void Solver::solve() {}
 
 long double Solver::getTotal() { return total; }

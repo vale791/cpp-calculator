@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <vector>
 
 class Solver {
 public:
@@ -11,6 +12,7 @@ public:
   long double getTotal();
 
 private:
+  std::vector<std::string> equationVec;
   std::string equation;
   long double total;
 };

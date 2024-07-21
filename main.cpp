@@ -16,6 +16,7 @@ int main() {
 
   std::getline(std::cin, equation);
 
+  solver.setEquation(equation);
   solver.parse();
 
   return 0;
