@@ -1,8 +1,11 @@
 #include <cmath>
+#include <string>
 
 #include "Math.hpp"
 
 char numbers[11] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'};
+
+char operators[5] = {'+', '-', '*', '/', '^'};
 
 template <typename T> bool isFound(T *array, T value, int arraySize) {
   for (int i = 0; i < arraySize; i++) {
@@ -115,16 +118,25 @@ void Solver::setEquation(std::string e) {
 std::string Solver::getEquation() { return equation; }
 
 void Solver::parse() {
-  std::vector<std::string> numStrings;
   bool foundNum;
+  bool foundOp;
 
   for (int i = 0; i < equation.length(); i++) {
     if (isFound(numbers, equation[i], 11) && !foundNum) {
       foundNum = true;
-      numStrings.push_back(getNumStr(i, equation));
+      equationVec.push_back(getNumStr(i, equation));
     } else if (!isFound(numbers, equation[i], 11) && foundNum) {
       foundNum = false;
+    } else if (isFound(operators, equation[i], 5) && !foundOp) {
+      foundOp = true;
+      equationVec.push_back(std::string(1, equation[i]));
+    } else if (!isFound(operators, equation[i], 5) && foundOp) {
+      foundOp = false;
     }
+  }
+
+  for (int i = 0; i < equationVec.size(); ++i) {
+    std::cout << equationVec[i] << '\n';
   }
 }
 
