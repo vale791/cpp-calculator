@@ -127,17 +127,22 @@ void Solver::parse() {
   for (int i = 0; i < equation.length(); i++) {
     if (isFound(numbers, equation[i], 11) && !foundNum) {
       foundNum = true;
-      equationVec.push_back(getNumStr(i, equation));
+      if (foundNegative) {
+        std::string numStr = getNumStr(i, equation);
+        numStr.insert(numStr.begin(), '-');
+        equationVec.push_back(numStr);
+      } else {
+        equationVec.push_back(getNumStr(i, equation));
+      }
     } else if (!isFound(numbers, equation[i], 11) && foundNum) {
       foundNum = false;
     } else if (equation[i] == '-' && isFound(numbers, equation[i + 1], 11)) {
 
       // isFound(operators, equation[i], 5) && !foundOp
       foundNegative = true;
-      std::cout << "Found negative\n";
-    } else if (isFound(operators, equation[i], 5) && !foundOp &&
-               !foundNegative) {
-      std::cout << "Found Operator\n";
+      std::cout << "N: " << equation[i] << '\n';
+    } else if (isFound(operators, equation[i], 5) && !foundOp) {
+      std::cout << "E: " << equation[i] << '\n';
       foundOp = true;
       foundNegative = false;
     } else if (!isFound(operators, equation[i], 5) && foundOp) {
