@@ -122,8 +122,6 @@ void Solver::parse() {
   bool foundOp;
   bool foundNegative;
 
-  // WARNING: NEGATIVE NUMBER RECOGNITION STILL IN TESTING. NOT COMPLETE.
-
   for (int i = 0; i < equation.length(); i++) {
     if (isFound(numbers, equation[i], 11) && !foundNum) {
       foundNum = true;
@@ -138,18 +136,13 @@ void Solver::parse() {
       foundNum = false;
     } else if (equation[i] == '-' && isFound(numbers, equation[i + 1], 11)) {
 
-      // isFound(operators, equation[i], 5) && !foundOp
       foundNegative = true;
-      std::cout << "N: " << equation[i] << '\n';
     } else if (isFound(operators, equation[i], 5) && !foundOp) {
-      std::cout << "E: " << equation[i] << '\n';
       foundOp = true;
       foundNegative = false;
     } else if (!isFound(operators, equation[i], 5) && foundOp) {
       foundOp = false;
     }
-
-    // equationVec.push_back(std::string(1, equation[i]));
   }
   for (int i = 0; i < equationVec.size(); ++i) {
     std::cout << equationVec[i] << '\n';
