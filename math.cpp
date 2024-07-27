@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cmath>
 #include <string>
 
@@ -78,7 +79,16 @@ double getNumAfterDecimalPoint(std::string numStr) {
   return decimalNum;
 }
 
-std::string getNumStr(int startIndex, std::string equation) {
+int getNearestNumIndex(int currentIndex, std::string str) {
+  for (int i = currentIndex; i < str.length(); ++i) {
+    if (isFound(numbers, str[i], 11)) {
+      return i;
+    }
+  }
+  return -1;
+}
+
+int getNumLength(int startIndex, std::string equation) {
   int numLength = 0;
   for (int i = startIndex; i < equation.length(); i++) {
     if (i == startIndex && equation[i] == '-') {
@@ -90,10 +100,31 @@ std::string getNumStr(int startIndex, std::string equation) {
       break;
     }
   }
+  return numLength;
+}
+
+std::string getNumStr(int startIndex, std::string equation) {
+  int numLength = getNumLength(startIndex, equation);
 
   std::string numStr = equation.substr(startIndex, numLength);
 
   return numStr;
+}
+
+void PrintErrorBase(int i, std::string equation) {
+  char spaceChar = ' ';
+  char caretChar = '^';
+  int nearestNumIndex = getNearestNumIndex(i, equation);
+  int endOfNumIndex =
+      getNumLength(nearestNumIndex, equation) - 1 + nearestNumIndex;
+  std::string spaces(equation.length() -
+                         getNumLength(nearestNumIndex, equation) -
+                         (equation.length() - endOfNumIndex - 1),
+                     spaceChar);
+  std::string carets(getNumLength(nearestNumIndex, equation), caretChar);
+  std::cout << "****************" << '\n';
+  std::cout << equation << '\n';
+  std::cout << spaces << carets << '\n';
 }
 
 long double getNum(int startIndex, std::string equation) {
@@ -146,6 +177,7 @@ void Solver::parse() {
     } else if (isFound(operators, equation[i], 7) && !foundOp) {
       foundOp = true;
       foundNegative = false;
+      foundNum = false;
     } else if (!isFound(operators, equation[i], 7) && foundOp) {
       foundOp = false;
     }
@@ -154,5 +186,38 @@ void Solver::parse() {
 
 // I got an idea on how to do this
 void Solver::solve() {}
+
+bool Solver::checkEquationValidity() {
+  bool foundOp = false;
+  bool foundNegative = false;
+  bool foundNum = false;
+  bool foundOpB = false;
+  bool foundNegativeB = false;
+  bool foundNumB = false;
+  char spaceChar = ' ';
+  char caretChar = '^';
+
+  for (int i = 0; i < equation.length(); ++i) {
+    if (i == 0) {
+      if (isFound(numbers, equation[i], 11) && !foundNum) {
+        std::cout << "Found a number at index " << i << '\n';
+        foundNumB = true;
+      }
+      if (isFound(operators, equation[i], 5)) {
+        if ((isFound(numbers, equation[i + 1], 11)) && equation[i] == '-') {
+          std::cout << "Found negative number at index " << i << '\n';
+          foundNumB = true;
+          foundNegativeB = true;
+        } else {
+          PrintErrorBase(i, equation);
+          std::cout << "error: couldn't find number before '" << equation[i]
+                    << "'." << '\n';
+        }
+      }
+    }
+  }
+
+  return 0;
+}
 
 long double Solver::getTotal() { return total; }

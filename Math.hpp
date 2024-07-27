@@ -10,6 +10,7 @@ public:
   void solve();
   void parse();
   long double getTotal();
+  bool checkEquationValidity();
 
 private:
   std::vector<std::string> equationVec;

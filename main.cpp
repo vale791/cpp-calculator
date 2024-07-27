@@ -18,6 +18,7 @@ int main() {
 
   solver.setEquation(equation);
   solver.parse();
+  solver.checkEquationValidity();
 
   return 0;
 }
