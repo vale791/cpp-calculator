@@ -184,7 +184,7 @@ void Solver::parse() {
   }
 }
 
-// I got an idea on how to do this
+// I've got an idea on how to do this
 void Solver::solve() {}
 
 bool Solver::checkEquationValidity() {
@@ -196,22 +196,22 @@ bool Solver::checkEquationValidity() {
   bool foundNumB = false;
   char spaceChar = ' ';
   char caretChar = '^';
+  std::string expecting = "number";
 
   for (int i = 0; i < equation.length(); ++i) {
-    if (i == 0) {
-      if (isFound(numbers, equation[i], 11) && !foundNum) {
-        std::cout << "Found a number at index " << i << '\n';
-        foundNumB = true;
-      }
-      if (isFound(operators, equation[i], 5)) {
-        if ((isFound(numbers, equation[i + 1], 11)) && equation[i] == '-') {
-          std::cout << "Found negative number at index " << i << '\n';
-          foundNumB = true;
-          foundNegativeB = true;
+    char currentChar = equation[i];
+    if (currentChar == ' ') {
+      continue;
+    } else {
+      if (isFound(numbers, currentChar, 11)) {
+        expecting = "op";
+      } else if (currentChar == '-') {
+        if (isFound(numbers, equation[i + 1], 11)) {
+          continue;
         } else {
           PrintErrorBase(i, equation);
-          std::cout << "error: couldn't find number before '" << equation[i]
-                    << "'." << '\n';
+          expecting = "op";
+          std::cout << "math error: expected a number\n";
         }
       }
     }
@@ -219,5 +219,24 @@ bool Solver::checkEquationValidity() {
 
   return 0;
 }
+
+// if (i == 0) {
+//       if (isFound(numbers, equation[i], 11) && !foundNum) {
+//         std::cout << "Found a number at index " << i << '\n';
+//         foundNumB = true;
+//       }
+//       if (isFound(operators, equation[i], 5)) {
+//         if ((isFound(numbers, equation[i + 1], 11)) && equation[i] == '-') {
+//           std::cout << "Found negative number at index " << i << '\n';
+//           foundNumB = true;
+//           foundNegativeB = true;
+//         } else {
+//           PrintErrorBase(i, equation);
+//           std::cout << "error: expected number before '" << equation[i] <<
+//           "'."
+//                     << '\n';
+//         }
+//       }
+// }
 
 long double Solver::getTotal() { return total; }
