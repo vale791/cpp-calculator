@@ -1,4 +1,3 @@
-#include <algorithm>
 #include <cmath>
 #include <string>
 
@@ -203,36 +202,51 @@ bool Solver::checkEquationValidity() {
     if (currentChar == ' ') {
       continue;
     } else {
-      if (isFound(numbers, currentChar, 11)) {
-        expecting = "op";
-      } else if (currentChar == '-') {
-        if (isFound(numbers, equation[i + 1], 11)) {
-          continue;
-        } else {
-          PrintErrorBase(i, equation);
+      if (expecting == "number") {
+        if (isFound(numbers, currentChar, 11)) {
           expecting = "op";
-          std::cout << "math error: expected a number\n";
+          int numLength = getNumLength(i, equation);
+          i += numLength - 1;
+        } else if (currentChar == '-') {
+          if (isFound(numbers, equation[i + 1], 11)) {
+            continue;
+          } else {
+            PrintErrorBase(i, equation);
+            std::cout << "math error: expected a number\n";
+            break;
+          }
+        }
+      } else {
+        if (expecting == "op") {
+          if (isFound(operators, currentChar, 7)) {
+            expecting = "number";
+          } else {
+            PrintErrorBase(i, equation);
+            std::cout << "math error: expected an operator\n";
+            break;
+          }
         }
       }
     }
   }
-
   return 0;
 }
-
 // if (i == 0) {
 //       if (isFound(numbers, equation[i], 11) && !foundNum) {
 //         std::cout << "Found a number at index " << i << '\n';
 //         foundNumB = true;
 //       }
 //       if (isFound(operators, equation[i], 5)) {
-//         if ((isFound(numbers, equation[i + 1], 11)) && equation[i] == '-') {
+//         if ((isFound(numbers, equation[i + 1], 11)) && equation[i] ==
+//         '-')
+//         {
 //           std::cout << "Found negative number at index " << i << '\n';
 //           foundNumB = true;
 //           foundNegativeB = true;
 //         } else {
 //           PrintErrorBase(i, equation);
-//           std::cout << "error: expected number before '" << equation[i] <<
+//           std::cout << "error: expected number before '" << equation[i]
+//           <<
 //           "'."
 //                     << '\n';
 //         }
