@@ -2,4 +2,8 @@ main.exe
 .vscode
 *.o
 main
+<<<<<<< HEAD
 todo-list.md
+=======
+*.md
+>>>>>>> ee503b2ae12b6d00622cd9fa3f65ef7ac13a2524

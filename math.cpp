@@ -116,6 +116,7 @@ void PrintErrorBase(int i, std::string equation) {
   int nearestNumIndex = getNearestNumIndex(i, equation);
   int endOfNumIndex =
       getNumLength(nearestNumIndex, equation) - 1 + nearestNumIndex;
+<<<<<<< HEAD
   
   if (isFound(operators, equation[i], 7)) {
     std::cout << "****************" << '\n';
@@ -123,6 +124,9 @@ void PrintErrorBase(int i, std::string equation) {
     std::cout << "^\n";
   } else {
     std::string spaces(equation.length() -
+=======
+  std::string spaces(equation.length() -
+>>>>>>> ee503b2ae12b6d00622cd9fa3f65ef7ac13a2524
                          getNumLength(nearestNumIndex, equation) -
                          (equation.length() - endOfNumIndex - 1),
                      spaceChar);
@@ -130,7 +134,10 @@ void PrintErrorBase(int i, std::string equation) {
   std::cout << "****************" << '\n';
   std::cout << equation << '\n';
   std::cout << spaces << carets << '\n';
+<<<<<<< HEAD
   }
+=======
+>>>>>>> ee503b2ae12b6d00622cd9fa3f65ef7ac13a2524
 }
 
 long double getNum(int startIndex, std::string equation) {
@@ -217,7 +224,6 @@ bool Solver::checkEquationValidity() {
             continue;
           } else {
             PrintErrorBase(i, equation);
-            std::cout << "i = " << i << '\n';
             std::cout << "math error: expected a number\n";
             break;
           }
