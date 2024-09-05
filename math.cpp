@@ -116,7 +116,13 @@ void PrintErrorBase(int i, std::string equation) {
   int nearestNumIndex = getNearestNumIndex(i, equation);
   int endOfNumIndex =
       getNumLength(nearestNumIndex, equation) - 1 + nearestNumIndex;
-  std::string spaces(equation.length() -
+  
+  if (isFound(operators, equation[i], 7)) {
+    std::cout << "****************" << '\n';
+    std::cout << equation << '\n';
+    std::cout << "^\n";
+  } else {
+    std::string spaces(equation.length() -
                          getNumLength(nearestNumIndex, equation) -
                          (equation.length() - endOfNumIndex - 1),
                      spaceChar);
@@ -124,6 +130,7 @@ void PrintErrorBase(int i, std::string equation) {
   std::cout << "****************" << '\n';
   std::cout << equation << '\n';
   std::cout << spaces << carets << '\n';
+  }
 }
 
 long double getNum(int startIndex, std::string equation) {
@@ -187,14 +194,7 @@ void Solver::parse() {
 void Solver::solve() {}
 
 bool Solver::checkEquationValidity() {
-  bool foundOp = false;
-  bool foundNegative = false;
-  bool foundNum = false;
-  bool foundOpB = false;
-  bool foundNegativeB = false;
-  bool foundNumB = false;
-  char spaceChar = ' ';
-  char caretChar = '^';
+  char currentOp;
   std::string expecting = "number";
 
   for (int i = 0; i < equation.length(); ++i) {
@@ -203,6 +203,11 @@ bool Solver::checkEquationValidity() {
       continue;
     } else {
       if (expecting == "number") {
+        if (currentChar == '0' and currentOp == '/') {
+          PrintErrorBase(i, equation);
+          std::cout << "math error: can't divide by 0";
+          break;
+        }
         if (isFound(numbers, currentChar, 11)) {
           expecting = "op";
           int numLength = getNumLength(i, equation);
@@ -212,6 +217,7 @@ bool Solver::checkEquationValidity() {
             continue;
           } else {
             PrintErrorBase(i, equation);
+            std::cout << "i = " << i << '\n';
             std::cout << "math error: expected a number\n";
             break;
           }
@@ -219,6 +225,7 @@ bool Solver::checkEquationValidity() {
       } else {
         if (expecting == "op") {
           if (isFound(operators, currentChar, 7)) {
+            currentOp = currentChar;
             expecting = "number";
           } else {
             PrintErrorBase(i, equation);
